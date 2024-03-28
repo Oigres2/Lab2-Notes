@@ -19,7 +19,7 @@ import com.example.notes_cm.data.entities.Note
 import com.example.notes_cm.data.vm.NoteViewModel
 
 class UpdateFragment : Fragment() {
-    private  val args by navArgs<UpdateFragmentArgs>()
+    private val args by navArgs<UpdateFragmentArgs>()
     private lateinit var mNoteViewModel: NoteViewModel
 
     override fun onCreateView(
@@ -30,7 +30,8 @@ class UpdateFragment : Fragment() {
 
         mNoteViewModel = ViewModelProvider(this)[NoteViewModel::class.java]
 
-        view.findViewById<TextView>(R.id.updateNote).text = args.currentNote.note
+        val noteTextView = view.findViewById<TextView>(R.id.updateNote)
+        noteTextView.text = args.currentNote.note
 
         val updateButton = view.findViewById<Button>(R.id.update)
         updateButton.setOnClickListener {
@@ -47,18 +48,19 @@ class UpdateFragment : Fragment() {
             findNavController().navigate(R.id.action_updateFragment_to_listFragment)
         }
 
-        return  view
+        return view
     }
 
-    private fun updateNote(){
+    private fun updateNote() {
         val noteText = view?.findViewById<EditText>(R.id.updateNote)?.text.toString()
 
-        if(noteText.isEmpty()) {
-            makeText(context, getString(R.string.empty_note_error), Toast.LENGTH_LONG).show()
+        if (noteText.isEmpty()) {
+            Toast.makeText(context, getString(R.string.empty_note_error), Toast.LENGTH_LONG).show()
         } else {
-            val note = Note(args.currentNote.id, noteText)
-            mNoteViewModel.updateNote(note)
-            makeText(requireContext(), getString(R.string.note_updated_success), Toast.LENGTH_LONG).show()
+            // Mantenha a data original ao atualizar a nota
+            val updatedNote = Note(args.currentNote.id, noteText, args.currentNote.date)
+            mNoteViewModel.updateNote(updatedNote)
+            Toast.makeText(requireContext(), getString(R.string.note_updated_success), Toast.LENGTH_LONG).show()
             findNavController().navigate(R.id.action_updateFragment_to_listFragment)
         }
     }
@@ -67,7 +69,7 @@ class UpdateFragment : Fragment() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setPositiveButton(getString(R.string.yes)) { _, _ ->
             mNoteViewModel.deleteNote(args.currentNote)
-            makeText(requireContext(), getString(R.string.note_deleted_success), Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.note_deleted_success), Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.action_updateFragment_to_listFragment)
         }
         builder.setNegativeButton(getString(R.string.no)) { _, _ -> }

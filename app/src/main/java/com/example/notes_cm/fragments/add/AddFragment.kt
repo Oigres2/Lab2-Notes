@@ -15,11 +15,12 @@ import com.example.notes_cm.data.entities.Note
 import com.example.notes_cm.data.vm.NoteViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.util.Date
-
-
+import java.util.*
+import java.text.SimpleDateFormat
 
 class AddFragment : Fragment() {
     private lateinit var mNoteViewModel: NoteViewModel
+    private var selectedDate: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,7 +51,7 @@ class AddFragment : Fragment() {
     private fun showDatePickerDialog() {
         val datePicker = MaterialDatePicker.Builder.datePicker().build()
         datePicker.addOnPositiveButtonClickListener { selection ->
-            val selectedDate = Date(selection)
+            selectedDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date(selection))
         }
         datePicker.show(childFragmentManager, "datePicker")
     }
@@ -58,10 +59,10 @@ class AddFragment : Fragment() {
     private fun addNote() {
         val noteText = view?.findViewById<EditText>(R.id.addNote)?.text.toString()
 
-        if(noteText.isEmpty()) {
+        if (noteText.isEmpty()) {
             Toast.makeText(view?.context, getString(R.string.note_empty_error), Toast.LENGTH_LONG).show()
         } else {
-            val note = Note(0, noteText)
+            val note = Note(0, noteText, selectedDate)
             mNoteViewModel.addNote(note)
             Toast.makeText(requireContext(), getString(R.string.note_saved_success), Toast.LENGTH_LONG).show()
             findNavController().navigate(R.id.action_addFragment_to_listFragment)
