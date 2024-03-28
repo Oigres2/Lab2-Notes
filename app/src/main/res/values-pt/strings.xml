@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Notas</string>
+    <string name="string_save">Guardar</string>
+    <string name="string_back">Retroceder</string>
+    <string name="string_delete">Apagar</string>
+    <string name="string_portrait">Vista Notes</string>
+    <string name="string_landscape">Vista Novas Notas</string>
+    <string name="string_add_note">Adicionar Nota</string>
+    <string name="string_update_note">Atualizar Nota</string>
+</resources>
