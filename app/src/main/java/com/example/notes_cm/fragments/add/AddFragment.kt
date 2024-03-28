@@ -50,9 +50,7 @@ class AddFragment : Fragment() {
     private fun showDatePickerDialog() {
         val datePicker = MaterialDatePicker.Builder.datePicker().build()
         datePicker.addOnPositiveButtonClickListener { selection ->
-            // Handle the date selection here
             val selectedDate = Date(selection)
-            // Update your UI or ViewModel with the selected date
         }
         datePicker.show(childFragmentManager, "datePicker")
     }
@@ -61,14 +59,11 @@ class AddFragment : Fragment() {
         val noteText = view?.findViewById<EditText>(R.id.addNote)?.text.toString()
 
         if(noteText.isEmpty()) {
-            Toast.makeText(view?.context, "Não pode uma nota vazia!", Toast.LENGTH_LONG).show()
-        }
-        else {
+            Toast.makeText(view?.context, getString(R.string.note_empty_error), Toast.LENGTH_LONG).show()
+        } else {
             val note = Note(0, noteText)
-
             mNoteViewModel.addNote(note)
-
-            Toast.makeText(requireContext(), "Gravado com sucesso!", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), getString(R.string.note_saved_success), Toast.LENGTH_LONG).show()
             findNavController().navigate(R.id.action_addFragment_to_listFragment)
         }
     }
